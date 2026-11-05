@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Дорожная карта голосового ИИ-интервьюера, который выявляет скрытые знания экспертов. По книге Д. Гуреева «Цифровое мышление в бизнесе».">
+<meta property="og:title" content="Археолог знаний">
+<meta property="og:description" content="Дорожная карта голосового ИИ-интервьюера, который выявляет скрытые знания экспертов. По книге Д. Гуреева «Цифровое мышление в бизнесе».">
+<meta property="og:type" content="website">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Археолог знаний</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Literata:opsz,wght@7..72,500;7..72,650&display=swap">
+<style>
+/* Layout: одна колонка полевого блокнота (~68ch), схемы и таблицы — в своих скролл-контейнерах */
+:root{
+  --bg:#F5F6F8; --surface:#FFFFFF; --ink:#1A2132; --muted:#5B6476; --line:#DCE0E7;
+  --accent:#2A4DB3; --accent-soft:#E7ECFA;
+  --ok:#2C7A4B; --ok-soft:#E2F1E7; --warn:#99610A; --warn-soft:#FAEFD7; --crit:#B0281F; --crit-soft:#F8E0DD;
+  --display:"Literata", Georgia, "Times New Roman", serif;
+  --body:"Golos Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141C; --surface:#171C27; --ink:#E5E8EF; --muted:#9BA4B6; --line:#2A3142;
+  --accent:#93AAF2; --accent-soft:#1D2844;
+  --ok:#74CC98; --ok-soft:#15301F; --warn:#E5B457; --warn-soft:#33280E; --crit:#F0897F; --crit-soft:#3A1917;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#10141C; --surface:#171C27; --ink:#E5E8EF; --muted:#9BA4B6; --line:#2A3142;
+  --accent:#93AAF2; --accent-soft:#1D2844;
+  --ok:#74CC98; --ok-soft:#15301F; --warn:#E5B457; --warn-soft:#33280E; --crit:#F0897F; --crit-soft:#3A1917;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.62 var(--body);
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:760px;margin:0 auto;padding-block:48px 72px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);font-weight:650;text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(2.1rem,5vw,2.9rem);letter-spacing:-.01em}
+h2{font-size:1.6rem}
+h3{font-size:1.12rem;font-weight:500}
+p{margin:0}
+a{color:var(--accent)}
+.eyebrow{font:500 .74rem/1.3 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:1.14rem;color:var(--ink);max-width:66ch}
+.muted{color:var(--muted)}
+section{display:flex;flex-direction:column;gap:18px}
+section > p, section > ul{max-width:68ch}
+ul{margin:0;padding-left:1.15em;display:flex;flex-direction:column;gap:6px}
+li::marker{color:var(--muted)}
+code,.mono{font-family:var(--mono);font-size:.88em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+/* hero */
+header{display:flex;flex-direction:column;gap:16px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font:400 .82rem/1.4 var(--mono);color:var(--muted)}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px 8px}
+nav.toc a{font:500 .82rem/1 var(--body);text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 12px;background:var(--surface)}
+nav.toc a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* схема двух слоёв */
+.strata{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.strata-inner{min-width:620px;padding:18px 18px 14px;display:grid;grid-template-columns:110px repeat(3,1fr);gap:10px 12px;align-items:stretch}
+.layer-label{font:500 .72rem/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);align-self:center}
+.hid{border:1.5px dashed var(--accent);color:var(--ink);background:var(--accent-soft);border-radius:8px;padding:9px 10px;font-size:.86rem;line-height:1.35}
+.vis{border:1.5px solid var(--ink);border-radius:8px;padding:9px 10px;font-size:.88rem;font-weight:500;line-height:1.3;background:var(--surface)}
+.vis small{display:block;font:400 .72rem/1.3 var(--mono);color:var(--muted);margin-top:3px}
+.strata-note{grid-column:1 / -1;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+
+/* таблицы */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;line-height:1.45}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{font:500 .72rem/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+td:first-child{font-weight:500}
+.tbl.wide table{min-width:640px}
+
+/* сильные стороны */
+.pros{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pro{border-left:3px solid var(--accent);padding:2px 0 2px 14px;display:flex;flex-direction:column;gap:4px}
+.pro b{font-weight:600}
+.pro span{color:var(--muted);font-size:.92rem}
+.callout{background:var(--accent-soft);border-radius:10px;padding:14px 16px;font-size:.98rem}
+
+/* роли */
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.role{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.role .n{font:500 .74rem/1 var(--mono);color:var(--accent)}
+.role p{font-size:.9rem}
+.role .src{font:400 .74rem/1.35 var(--mono);color:var(--muted)}
+.role.human{border-color:var(--ink)}
+.modes{counter-reset:m;list-style:none;padding:0;gap:10px}
+.modes li{display:grid;grid-template-columns:28px 1fr;gap:10px}
+.modes li::before{counter-increment:m;content:counter(m);font:500 .8rem/1.6 var(--mono);color:var(--accent)}
+
+/* этапы */
+.stages{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);margin-left:10px}
+.stage{position:relative;padding:0 0 28px 26px;display:flex;flex-direction:column;gap:10px}
+.stage:last-child{padding-bottom:0}
+.stage::before{content:attr(data-n);position:absolute;left:-15px;top:-2px;width:28px;height:28px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);color:var(--accent);font:500 .8rem/24px var(--mono);text-align:center}
+.stage-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.chip{font:500 .74rem/1 var(--mono);padding:5px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.goal{font-size:.95rem}
+.goal b{font-weight:600}
+.stage ul{font-size:.93rem}
+.gate{font-size:.86rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.gate b{color:var(--ink);font-weight:500}
+
+/* зоны */
+.zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.zone{border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.zone h3{font-family:var(--body);font-size:.95rem;font-weight:600;display:flex;gap:8px;align-items:center}
+.zone h3::before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor;flex:none}
+.zone p{font-size:.88rem}
+.zone .who{font:500 .74rem/1.3 var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.z-ok{background:var(--ok-soft)} .z-ok h3,.z-ok .who{color:var(--ok)}
+.z-warn{background:var(--warn-soft)} .z-warn h3,.z-warn .who{color:var(--warn)}
+.z-crit{background:var(--crit-soft)} .z-crit h3,.z-crit .who{color:var(--crit)}
+
+/* чек-лист */
+.check{list-style:none;padding:0;gap:8px}
+.check li{display:grid;grid-template-columns:22px 1fr;gap:8px}
+.check li::before{content:"";width:14px;height:14px;border:1.5px solid var(--muted);border-radius:3px;margin-top:5px}
+
+footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;display:flex;flex-direction:column;gap:6px}
+
+@media (max-width:640px){
+  .wrap{padding-block:28px 56px;gap:44px}
+  .pros,.roles,.zones{grid-template-columns:minmax(0,1fr)}
+  h2{font-size:1.38rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Дорожная карта · концепция, не приложение</span>
+  <h1>Археолог знаний</h1>
+  <p class="lede">Голосовой ИИ-интервьюер — аудитор, журналист и интервьюер в одном лице. Он разговаривает с экспертом о реальной работе и шаг за шагом раскапывает скрытые артефакты мышления: правила, критерии, «красные флаги» и справочники, которые человек держит в голове и называет опытом.</p>
+  <div class="meta"><span>Основа: Д. Гуреев, «Цифровое мышление в бизнесе», 2026</span><span>Подготовил Claude · ноябрь 2026</span></div>
+  <nav class="toc" aria-label="Разделы">
+    <a href="#vision">Как Claude видит ситуацию</a>
+    <a href="#arch">Устройство</a>
+    <a href="#stages">Этапы</a>
+    <a href="#zones">Зоны автономности</a>
+    <a href="#ethics">Доверие</a>
+    <a href="#book">Связь с книгой</a>
+    <a href="#next">Ближайшие 2 недели</a>
+  </nav>
+</header>
+
+<section aria-labelledby="h-idea">
+  <h2 id="h-idea">Что именно раскапываем</h2>
+  <p>По книге, работа эксперта — это не чёрный ящик, а цепочка артефактов. Внизу лежат видимые документы, которые можно распечатать. Между ними эксперт в голове создаёт скрытые промежуточные продукты. Без них следующий документ не появится. Именно они — узкое место и цель раскопок.</p>
+  <div class="strata" role="img" aria-label="Схема: видимые артефакты письмо клиента, ТЗ, спецификация; над ними скрытые артефакты продажника и инженера">
+    <div class="strata-inner">
+      <span class="layer-label">Скрытый слой<br>в голове</span>
+      <div class="hid">Оценка клиента по сигналам в письме · понимание масштаба · вопросы, которые надо задать</div>
+      <div class="hid">Аналоги «по смыслу» · цены в памяти · правила совместимости · звонок поставщику «на всякий случай»</div>
+      <div class="hid">Чек-лист готовности · что проверить перед отправкой</div>
+      <span class="layer-label">Видимый слой<br>документы</span>
+      <div class="vis">Письмо клиента<small>вход</small></div>
+      <div class="vis">ТЗ для инженера<small>обязательный артефакт</small></div>
+      <div class="vis">Спецификация → КП<small>выход</small></div>
+      <p class="strata-note">По схеме гл. 3 (с. 76, 82–83): у продажника Виктора и инженера Сергея 9 скрытых артефактов на 3 видимых, 6 ч 40 мин на запрос. Основная потеря — время ожидания в очереди к эксперту.</p>
+    </div>
+  </div>
+  <p>Идея интервьюера — прямое воплощение схемы из гл. 17 «Методолог + ИИ-агент». Агент задаёт вопросы, собирает информацию и формирует гипотезы. Методолог-человек оценивает результат и берёт на себя нестандартные случаи. Внутри агента работает ассистент-критик из гл. 15.</p>
+</section>
+
+<section id="vision" aria-labelledby="h-vision">
+  <span class="eyebrow">Взгляд Claude</span>
+  <h2 id="h-vision">Почему идея сильная</h2>
+  <div class="pros">
+    <div class="pro"><b>Бьёт в узкое место</b><span>Автоматизация тормозится на постановке задачи, а не на ИТ. Метод артефактов снимает около 80% неопределённости (гл. 13).</span></div>
+    <div class="pro"><b>Масштабирует методолога</b><span>С агентом, который делает первые шаги, один методолог ведёт 10 проектов вместо 3 (гл. 17).</span></div>
+    <div class="pro"><b>Голос — родной канал эксперта</b><span>Опытные люди охотно рассказывают и не любят писать регламенты.</span></div>
+    <div class="pro"><b>Модели уже готовы</b><span>Современные модели хорошо ведут интервью, если задать им жёсткую методику и формат итогов.</span></div>
+  </div>
+
+  <h3>Риски, которые важно учесть заранее</h3>
+  <div class="tbl wide"><table>
+    <thead><tr><th>Риск</th><th>Почему серьёзно</th><th>Что делаем</th></tr></thead>
+    <tbody>
+      <tr><td>Интервью ≠ наблюдение</td><td>Алексей не просто спрашивал, а сидел рядом с секундомером. Часть знаний не проговаривается, пока человек не делает дело. Логи выявили 20 переключений в день, о которых никто не сказал (гл. 7).</td><td>Только свежие реальные кейсы. Режим «думай вслух» во время работы. Разбор документов. Сверка с логами и CRM.</td></tr>
+      <tr><td>Страх и недоверие</td><td>«Меня хотите заменить роботом?» (гл. 3). Инженер из страха сокращения загрузил проекты без описаний (гл. 10).</td><td>Добровольность и прозрачность. Эксперт — соавтор с правом вето. Письменный запрет использовать интервью в кадровых решениях.</td></tr>
+      <tr><td>Агент додумывает или теряет страховки</td><td>Катастрофа «Сибирь-Хим» началась с того, что план клиента приняли за факт. Исчезла и незаписанная привычка позвонить клиенту и заложить спецсталь.</td><td>Без наводящих вопросов. Метки «факт / план / допущение». Обязательные вопросы о страховках. Независимый критик. Подтверждение экспертом.</td></tr>
+      <tr><td>Ограничения голоса</td><td>Жаргон и марки, задержки, перебивания, усталость: больше 45 минут подряд — плохо.</td><td>Словарь терминов. Короткие сессии. Итоги проверяются письменно, а не на слух.</td></tr>
+      <tr><td>Данные</td><td>Голос — это персональные данные. В рассказах звучат клиенты и наценки, а служебная наценка однажды попала в документ клиенту (гл. 11).</td><td>Согласие эксперта. Фильтр конфиденциального на входе и выходе. Обезличивание. Решение, какие модели и хранилища допустимы.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="callout">Строить нужно не умный чат-бот, а методику с ИИ-исполнителем. Технология даёт половину успеха, вторую половину даёт доверие людей.</p>
+</section>
+
+<section id="arch" aria-labelledby="h-arch">
+  <span class="eyebrow">Целевая картина</span>
+  <h2 id="h-arch">Как будет устроена система</h2>
+  <div class="roles">
+    <div class="role"><span class="n">агент 1</span><h3>Интервьюер</h3><p>Ведёт голосовую беседу: лестница конкретизации, контрастные вопросы, исключения, пересказ для проверки.</p><span class="src">Алексей у Сергея и Виктора, гл. 3–5</span></div>
+    <div class="role"><span class="n">агент 2</span><h3>Стенографист</h3><p>Размечает транскрипт на лету: шаги, решения, расплывчатые глаголы («оцениваю», «понимаю»), факт или план.</p><span class="src">Блокнот с хронометражем, гл. 3, 8</span></div>
+    <div class="role"><span class="n">агент 3</span><h3>Планировщик покрытия</h3><p>Держит карту «вход → шаги → выход», видит пробелы и выбирает следующий вопрос.</p><span class="src">Адаптивный план агента, гл. 15, 17</span></div>
+    <div class="role"><span class="n">агент 4</span><h3>Критик-аудитор</h3><p>Независимо ищет несказанное, противоречия и слишком гладкие места. Блокирует карточку, пока вопросы без ответа.</p><span class="src">Олег Викторович, гл. 15</span></div>
+    <div class="role"><span class="n">хранилище</span><h3>База артефактов</h3><p>Карточки, версии, ссылки на фрагменты беседы, статус подтверждения.</p><span class="src">Конвейер артефактов, гл. 6</span></div>
+    <div class="role human"><span class="n">человек</span><h3>Методолог и эксперт</h3><p>Эксперт подтверждает карточки через форму, а не через чат. Методолог финализирует и работает с людьми.</p><span class="src">Методолог + ИИ-агент, гл. 17</span></div>
+  </div>
+  <h3>Пять режимов интервью</h3>
+  <ul class="modes">
+    <li><span><b>Ретро-интервью по свежему кейсу.</b> «Расскажите про вчерашний запрос», хронология по точкам решений.</span></li>
+    <li><span><b>Думай вслух.</b> Эксперт работает и проговаривает, агент изредка спрашивает. Ближе всего к наблюдению Алексея.</span></li>
+    <li><span><b>Разбор документа.</b> ТЗ, таблица или письмо: агент извлекает всё сам и спрашивает только о пробелах.</span></li>
+    <li><span><b>Спор с машиной.</b> Агент применяет выведенные правила к новым кейсам, эксперт поправляет, каждая поправка становится правилом.</span></li>
+    <li><span><b>Интервью получателя.</b> Какой формат нужен тому, кто получает результат эксперта, и что для него критично.</span></li>
+  </ul>
+</section>
+
+<section id="stages" aria-labelledby="h-stages">
+  <span class="eyebrow">Дорожная карта</span>
+  <h2 id="h-stages">Этапы от методики до продукта</h2>
+  <p class="muted">Сроки ориентировочные: один методолог, 2–3 эксперта в пилоте. Каждый этап заканчивается решением: идём дальше, меняем или останавливаемся.</p>
+  <div class="stages">
+    <div class="stage" data-n="0">
+      <div class="stage-head"><h3>Методика и рамка</h3><span class="chip">1–2 нед · без кода</span></div>
+      <p class="goal"><b>Цель:</b> чтобы агенту было что исполнять.</p>
+      <ul>
+        <li>Один процесс для старта — узкое место, где копится очередь. Эффект = время операции × частота.</li>
+        <li>2–3 эксперта-добровольца и один скептик, будущий эталон для критика.</li>
+        <li>Шаблон карточки артефакта, банк вопросов, сценарий онбординга эксперта.</li>
+        <li>Методолог вручную проводит 1–2 эталонных интервью.</li>
+      </ul>
+    </div>
+    <div class="stage" data-n="1">
+      <div class="stage-head"><h3>Прототип в Claude Project</h3><span class="chip">2–3 нед · без кода</span></div>
+      <p class="goal"><b>Цель:</b> проверить, что ИИ вообще способен вести такое интервью.</p>
+      <ul>
+        <li>Инструкция интервьюера в проект, выжимка метода в базу знаний, голосовой режим.</li>
+        <li>5–10 сессий по 30–45 мин. Команды «Итоги» и «Критик». Эксперт письменно правит карточки.</li>
+        <li>Сравнение с эталоном, 3–5 итераций инструкции.</li>
+      </ul>
+      <div class="tbl"><table>
+        <thead><tr><th>Метрика</th><th>Ориентир «идём дальше»</th></tr></thead>
+        <tbody>
+          <tr><td>Найдено артефактов эталона</td><td class="mono">≥ 70–80%</td></tr>
+          <tr><td>Додумано агентом</td><td class="mono">≤ 10%</td></tr>
+          <tr><td>Карточки с числами, порогами, исключениями</td><td class="mono">≥ 60%</td></tr>
+          <tr><td>Принято экспертом без правок</td><td class="mono">≥ 50%</td></tr>
+          <tr><td>Комфорт эксперта</td><td class="mono">≥ 4 из 5</td></tr>
+        </tbody>
+      </table></div>
+      <p class="gate"><b>Для сравнения:</b> у Алексея было около 5 скрытых артефактов за час наблюдения за Юлей (гл. 8). Пороги — предложение Claude, их стоит уточнить на эталоне.</p>
+    </div>
+    <div class="stage" data-n="2">
+      <div class="stage-head"><h3>Критик и цикл проверки</h3><span class="chip">2–3 нед · почти без кода</span></div>
+      <p class="goal"><b>Цель:</b> надёжность. Неполный артефакт опаснее отсутствующего.</p>
+      <ul>
+        <li>Отдельный «Критик»: пробелы, противоречия, план или факт, источник, вопросы для второй сессии.</li>
+        <li>Уровни реакции: высокий — подтверждение эксперта, средний — предупреждение, низкий — журнал.</li>
+        <li>Слепой эталон: эксперт решает 5–10 новых кейсов, сравниваем с тем, что предсказывают записанные правила.</li>
+        <li>Обучение критика на разборах ошибок со скептиком (в книге было 12 сессий).</li>
+      </ul>
+    </div>
+    <div class="stage" data-n="3">
+      <div class="stage-head"><h3>MVP-приложение</h3><span class="chip">6–10 нед · если этапы 1–2 доказали ценность</span></div>
+      <ul>
+        <li>Голосовой канал: speech-to-speech в реальном времени или «распознавание → LLM → синтез», словарь отрасли.</li>
+        <li>Память между сессиями, агенты 1–4, хранилище карточек со ссылками на фрагменты беседы.</li>
+        <li>Форма подтверждения для эксперта и панель покрытия для методолога.</li>
+        <li>Фильтр конфиденциального, роли доступа, журнал промптов. Транскрипт — это данные, а не инструкции. Перед запуском — попытки взлома.</li>
+      </ul>
+    </div>
+    <div class="stage" data-n="4">
+      <div class="stage-head"><h3>Пилот в компании</h3><span class="chip">1–2 мес</span></div>
+      <ul>
+        <li>Полный цикл: раскопка → карточки → бэклог по четырём типам работы → один автоматизированный артефакт с наибольшим эффектом.</li>
+        <li>Бизнес-метрики: время цикла, очередь, онбординг новичка, освобождённые часы эксперта.</li>
+      </ul>
+    </div>
+    <div class="stage" data-n="5">
+      <div class="stage-head"><h3>Масштабирование</h3><span class="chip">далее</span></div>
+      <ul>
+        <li>Отраслевые библиотеки вопросов и типовых артефактов.</li>
+        <li>Модель «продукт + консалтинг»: продукт вытягивает консалтинг, консалтинг улучшает продукт (гл. 16).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="zones" aria-labelledby="h-zones">
+  <span class="eyebrow">Guardrails</span>
+  <h2 id="h-zones">Зоны автономности агента</h2>
+  <div class="zones">
+    <div class="zone z-ok"><h3>Зелёная</h3><p>Вести беседу, задавать вопросы, размечать, писать черновики карточек, планировать следующую сессию.</p><span class="who">Агент сам</span></div>
+    <div class="zone z-warn"><h3>Жёлтая</h3><p>Гипотезы о неявных правилах, противоречия, чувствительные темы: страхи, конфликты, ошибки коллег.</p><span class="who">Агент помечает, методолог смотрит</span></div>
+    <div class="zone z-crit"><h3>Красная</h3><p>Финальная карточка, критичные параметры (безопасность, деньги, химия), выводы о людях, передача правила в автоматизацию.</p><span class="who">Только человек</span></div>
+  </div>
+  <p>Карточка уходит в автоматизацию, только когда заполнены все критичные поля, у каждого утверждения есть источник и есть подтверждение эксперта. Подтверждение требует активного действия: исправить, дописать, привести пример. Иначе, как предупреждает книга, критическое мышление людей атрофируется.</p>
+</section>
+
+<section id="ethics" aria-labelledby="h-ethics">
+  <span class="eyebrow">Этика</span>
+  <h2 id="h-ethics">Доверие важнее технологии</h2>
+  <ul>
+    <li><b>Добровольность и прозрачность.</b> Эксперт знает цель, видит всё, что записано, и может удалить запись.</li>
+    <li><b>Соавторство.</b> Карточка подписана экспертом, его экспертиза остаётся в компании под его именем. Подача: «научите систему думать, как вы».</li>
+    <li><b>Не оценка персонала.</b> Интервью никогда не используются в решениях о зарплате и сокращениях.</li>
+    <li><b>Без скрытой предвзятости в промптах.</b> Знание не подгоняется под «позитивную для компании позицию».</li>
+    <li><b>«Система — это мы».</b> За ошибку системы отвечают её создатели, а не эксперт, давший знание (гл. 14).</li>
+  </ul>
+</section>
+
+<section id="book" aria-labelledby="h-book">
+  <span class="eyebrow">Источник</span>
+  <h2 id="h-book">Что взято из книги</h2>
+  <div class="tbl wide"><table>
+    <thead><tr><th>Идея книги</th><th>Глава</th><th>Элемент интервьюера</th></tr></thead>
+    <tbody>
+      <tr><td>Артефакт — то, что можно распечатать; процесс — конвейер обязательных артефактов</td><td class="mono">2</td><td>Итог — документы: чек-листы и таблицы</td></tr>
+      <tr><td>Скрытый артефакт мышления</td><td class="mono">3–4</td><td>Единица результата — карточка</td></tr>
+      <tr><td>«Ищи, где копится очередь»</td><td class="mono">3</td><td>Вопросы о времени, ожиданиях, переключениях</td></tr>
+      <tr><td>Лестница «что конкретно? → как определяешь? → откуда знаешь? → где записано?»</td><td class="mono">4–5</td><td>Ядро диалога</td></tr>
+      <tr><td>Четыре типа работы и выбор инструмента</td><td class="mono">5</td><td>Бэклог автоматизации</td></tr>
+      <tr><td>Требования задаёт получатель</td><td class="mono">4–5</td><td>Интервью получателя</td></tr>
+      <tr><td>Слепой эталон, спор с машиной</td><td class="mono">6</td><td>Проверка правил на кейсах</td></tr>
+      <tr><td>Наблюдение → понимание → диалог → результат → рефлексия</td><td class="mono">8</td><td>Протокол и цикл между сессиями</td></tr>
+      <tr><td>Экстернализация критических параметров</td><td class="mono">9</td><td>Обязательные поля карточки</td></tr>
+      <tr><td>Незаписанная страховка исчезла при автоматизации</td><td class="mono">пролог, 14</td><td>Обязательный блок о страховках</td></tr>
+      <tr><td>Ассистент-критик, эвристики скептика, уровни проверки</td><td class="mono">15</td><td>Агент-критик</td></tr>
+      <tr><td>Методолог + ИИ-агент, красные, жёлтые и зелёные зоны</td><td class="mono">17</td><td>Архитектура и guardrails</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">Сверх книги в методику добавлены классические техники извлечения знаний: Critical Decision Method, contextual inquiry («мастер и подмастерье»), протокол «думай вслух», laddering, teach-back.</p>
+</section>
+
+<section aria-labelledby="h-q">
+  <h2 id="h-q">Что нужно решить автору идеи</h2>
+  <ul>
+    <li>Для кого продукт: для своей компании или сразу для рынка как продукт и консалтинг?</li>
+    <li>Какой процесс и отрасль берём в пилот? Где сейчас самая длинная очередь?</li>
+    <li>Кто методолог, который проверяет агента?</li>
+    <li>Какие модели допустимы и где хранить данные?</li>
+    <li>Нужна ли интеграция с CRM, почтой и документами для сверки рассказа с фактами?</li>
+  </ul>
+</section>
+
+<section id="next" aria-labelledby="h-next">
+  <span class="eyebrow">Старт</span>
+  <h2 id="h-next">Ближайшие 2 недели</h2>
+  <ul class="check">
+    <li>Прочитать выжимку метода — это общий язык команды.</li>
+    <li>Выбрать один процесс и двух экспертов, один из них скептик.</li>
+    <li>Создать Claude Project: инструкция интервьюера и выжимка метода готовы.</li>
+    <li>Провести пробную сессию на себе и посмотреть, где агент копает, а где додумывает.</li>
+    <li>Провести 2 сессии с экспертами, затем «Итоги» и «Критик». Эксперт письменно правит карточки.</li>
+    <li>Поправить инструкцию и решить, переходить ли к этапу 2.</li>
+  </ul>
+</section>
+
+<footer>
+  <span>Материалы проекта: выжимка метода, инструкция для Claude Project, подробный конспект всех 17 глав своими словами.</span>
+  <span>Цифры из книги приведены как иллюстрации: в самой книге есть несостыковки в суммах и сроках.</span>
+</footer>
+
+</div>
+
+</body>
+</html>
